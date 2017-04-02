@@ -7,6 +7,15 @@
 //
 
 #import "AppDelegate.h"
+#import "HistoryViewController.h"
+
+static NSString * tags;
+static NSString * site;
+static NSString * imageLevel;
+static NSString * limit;
+
+static NSString * ratting;
+static NSString * censore;
 
 @interface AppDelegate ()
 
@@ -14,9 +23,114 @@
 
 @implementation AppDelegate
 
++(void)addHistory:(NSString *)tag{
+    if([tag isEqualToString:@" "])return;
+    NSMutableArray * arr =[[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]valueForKey:@"History"]];
+    if(![arr containsObject:tag]){
+        [arr insertObject:tag atIndex:0];
+    }
+    NSArray * tmp = [[NSArray alloc]initWithArray:arr];
+    [[NSUserDefaults standardUserDefaults]setObject:tmp forKey:@"History"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    
+}
+
++(NSString *)getSite{
+    return site;
+}
++(void)setSite:(NSString *)str{
+    site = str;
+}
+
++(NSString *)getTags{
+    return [NSString stringWithFormat:@"%@ %@ %@",tags,ratting,censore];
+}
++(NSString *)getOriTags{
+    return tags;
+}
++(void)setTags:(NSString *)str{
+    tags = str;
+    [self addHistory:str];
+}
+
++(NSString *)getImageLevel{
+    return imageLevel;
+}
++(void)setImageLevel:(NSString *)str{
+    imageLevel = str;
+}
+
++(NSString *)getLimit{
+    return limit;
+}
++(void)setLimit:(NSString *)str{
+    limit = str;
+}
+
++(NSString *)getRating{
+    return ratting;
+}
++(void)setRating:(NSString *)str{
+    ratting = str;
+    [[NSUserDefaults standardUserDefaults]setObject:ratting forKey:@"ratting"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
++(NSString *)getCensore{
+    return censore;
+}
++(void)setCensore:(NSString *)str{
+    censore = str;
+    [[NSUserDefaults standardUserDefaults]setObject:censore forKey:@"censore"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    site = [[NSUserDefaults standardUserDefaults]stringForKey:@"site"];
+    if(!site){
+        site = @"Konachan";
+        [[NSUserDefaults standardUserDefaults]setObject:site forKey:@"site"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    
+    imageLevel = [[NSUserDefaults standardUserDefaults]stringForKey:@"imageLevel"];
+    if(!imageLevel){
+        imageLevel = @"High";
+        [[NSUserDefaults standardUserDefaults]setObject:imageLevel forKey:@"imageLevel"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    
+    limit = [[NSUserDefaults standardUserDefaults]stringForKey:@"limit"];
+    if(!limit){
+        limit = @"20";
+        [[NSUserDefaults standardUserDefaults]setObject:limit forKey:@"limit"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    
+    ratting = [[NSUserDefaults standardUserDefaults]stringForKey:@"ratting"];
+    if(!ratting){
+        ratting = @"rating:safe";
+        [[NSUserDefaults standardUserDefaults]setObject:ratting forKey:@"ratting"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    
+    censore = [[NSUserDefaults standardUserDefaults]stringForKey:@"censore"];
+    if(!censore){
+        censore = @"";
+        [[NSUserDefaults standardUserDefaults]setObject:censore forKey:@"censore"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    
+    NSArray * history = [[NSUserDefaults standardUserDefaults]valueForKey:@"History"];
+    if(!history){
+        history = [NSArray new];
+        [[NSUserDefaults standardUserDefaults]setObject:history forKey:@"History"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    
     return YES;
 }
 
@@ -46,6 +160,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
 
 
 @end

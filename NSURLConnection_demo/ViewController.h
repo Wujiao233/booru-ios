@@ -10,6 +10,9 @@
 
 @interface ViewController : UIViewController
 
+- (void)setText:(NSString *)str;
+- (void)initTableViewWithDict:(NSDictionary *)dict;
+- (void)doSearch;
 
 @end
 

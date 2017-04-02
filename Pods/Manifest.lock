@@ -1,0 +1,32 @@
+PODS:
+  - BGUIFoundationKit (0.0.2):
+    - BGUIFoundationKit/Addtional (= 0.0.2)
+    - BGUIFoundationKit/EGOTableViewPullRefresh (= 0.0.2)
+  - BGUIFoundationKit/Addtional (0.0.2)
+  - BGUIFoundationKit/EGOTableViewPullRefresh (0.0.2):
+    - BGUIFoundationKit/EGOTableViewPullRefresh/Resources (= 0.0.2)
+  - BGUIFoundationKit/EGOTableViewPullRefresh/Resources (0.0.2)
+  - BGWaterFlowView (0.0.4):
+    - BGUIFoundationKit (~> 0.0.2)
+    - SDWebImage (~> 3.7.3)
+  - HUPhotoBrowser (1.1.4)
+  - MBProgressHUD (1.0.0)
+  - SDWebImage (3.7.6):
+    - SDWebImage/Core (= 3.7.6)
+  - SDWebImage/Core (3.7.6)
+
+DEPENDENCIES:
+  - BGWaterFlowView
+  - HUPhotoBrowser (~> 1.1.3)
+  - MBProgressHUD
+
+SPEC CHECKSUMS:
+  BGUIFoundationKit: 9a9fc186b416ef965dd41e6dc638f701127d349c
+  BGWaterFlowView: 77e6ff8277936ffd783c951b39b5b15587e30a07
+  HUPhotoBrowser: ce71c76b622a959ff225b673315614ab6c582cf1
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9
+
+PODFILE CHECKSUM: bd2b3286dd0f9c46429264ca29e887e5ea5efc16
+
+COCOAPODS: 1.2.0
