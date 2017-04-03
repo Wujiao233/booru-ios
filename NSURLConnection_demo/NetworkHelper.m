@@ -21,6 +21,10 @@ static NetworkHelper * ownNetworkHelper;
     return ownNetworkHelper;
 }
 
+-(void)getRemotoResponseUrlUsingGET:(NSString *)url Block:(CompleteBlock)block{
+    [self getRemotoResponseUrl:url Method:@"GET" Block:block];
+}
+
 -(void)getRemotoResponseUrl:(NSString *)url Method:(NSString*)method Block:(CompleteBlock)block{
     [self getRemotoResponseUrl:url Method:method Body:nil Block:block];
 }

@@ -11,7 +11,7 @@
 #import "hu_const.h"
 #import "HUWebImage.h"
 #import "HUToast.h"
-#import "MBProgressHUD.h";
+#import "MBProgressHUD.h"
 
 @interface HUPhotoBrowser () <UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout> {
     CGRect _endTempFrame;

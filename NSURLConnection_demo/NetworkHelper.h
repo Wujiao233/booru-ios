@@ -14,6 +14,8 @@ typedef void (^CompleteBlock)(NSMutableData * data);
 
 +(instancetype)getHelper;
 
+-(void)getRemotoResponseUrlUsingGET:(NSString *)url Block:(CompleteBlock)block;
+
 -(void)getRemotoResponseUrl:(NSString *)url Method:(NSString*)method Block:(CompleteBlock)block;
 
 -(void)getRemotoResponseUrl:(NSString *)url Method:(NSString*)method Body:(NSString *)body Block:(CompleteBlock)block;
