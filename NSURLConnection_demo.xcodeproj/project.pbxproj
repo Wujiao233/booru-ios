@@ -28,6 +28,7 @@
 		A89E81061E6D75D100682D76 /* BGCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A89E81051E6D75D100682D76 /* BGCollectionViewCell.m */; };
 		A89E81091E6D96BD00682D76 /* SearchResultTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A89E81081E6D96BD00682D76 /* SearchResultTableViewController.m */; };
 		A89E810C1E6DC45400682D76 /* TagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = A89E810B1E6DC45400682D76 /* TagsView.m */; };
+		A8B36D241E9290D1002B31D9 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A8B36D231E9290D1002B31D9 /* NetworkHelper.m */; };
 		AADFAFA01F1535114D7595B4 /* libPods-NSURLConnection_demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B809D3EC87BDC86C0C7FABC1 /* libPods-NSURLConnection_demo.a */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +94,8 @@
 		A89E81081E6D96BD00682D76 /* SearchResultTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultTableViewController.m; sourceTree = "<group>"; };
 		A89E810A1E6DC45400682D76 /* TagsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagsView.h; sourceTree = "<group>"; };
 		A89E810B1E6DC45400682D76 /* TagsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagsView.m; sourceTree = "<group>"; };
+		A8B36D221E9290D1002B31D9 /* NetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkHelper.h; sourceTree = "<group>"; };
+		A8B36D231E9290D1002B31D9 /* NetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkHelper.m; sourceTree = "<group>"; };
 		B809D3EC87BDC86C0C7FABC1 /* libPods-NSURLConnection_demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NSURLConnection_demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -204,6 +207,8 @@
 			children = (
 				A88977E11E83EEF700408449 /* BooruNetwork.h */,
 				A88977E21E83EEF700408449 /* BooruNetwork.m */,
+				A8B36D221E9290D1002B31D9 /* NetworkHelper.h */,
+				A8B36D231E9290D1002B31D9 /* NetworkHelper.m */,
 			);
 			name = NetWork;
 			sourceTree = "<group>";
@@ -451,6 +456,7 @@
 				A89E81091E6D96BD00682D76 /* SearchResultTableViewController.m in Sources */,
 				A89BD34A1E78CEF70032A966 /* GDataXMLNode.m in Sources */,
 				A861F5ED1E6A847D004F2788 /* ViewController.m in Sources */,
+				A8B36D241E9290D1002B31D9 /* NetworkHelper.m in Sources */,
 				A81B5AD31E89045800D6A0FD /* HistoryViewController.m in Sources */,
 				A89BD3401E781B720032A966 /* SettingViewController.m in Sources */,
 				A861F6281E6AB85C004F2788 /* TableFootViewController.m in Sources */,
