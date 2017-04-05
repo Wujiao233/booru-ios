@@ -14,6 +14,8 @@ static NetworkHelper * ownNetworkHelper;
 
 @implementation NetworkHelper
 
+// Git Commit Auther Test
+
 +(instancetype)getHelper{
     if(ownNetworkHelper == nil){
         ownNetworkHelper = [NetworkHelper new];
