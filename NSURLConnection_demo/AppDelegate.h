@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>{
     
 }
 
 @property (strong, nonatomic) UIWindow *window;
+
 
 +(NSString *)getTags;
 +(NSString *)getOriTags;
@@ -28,6 +31,8 @@
 +(void)setRating:(NSString *)str;
 +(NSString *)getCensore;
 +(void)setCensore:(NSString *)str;
++(NSInteger)getLineNumber;
++(void)setLineNumber:(NSInteger)i;
 
 +(void)addHistory:(NSString *)tag;
 

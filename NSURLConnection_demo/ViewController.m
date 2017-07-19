@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *titleTwoLabel;
 @property (weak, nonatomic) IBOutlet UIButton *searchAll_Btn;
+@property(nonatomic,strong)UIView *searchBarView;
 
 @end
 
@@ -78,6 +79,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initTableViewWithDict:) name:@"searchResult" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSearchResultFinished:) name:@"tagsSearch" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSearchBarKeyWord:) name:@"changeTags" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(changeFrames:)
+//                                                 name:UIDeviceOrientationDidChangeNotification
+//                                               object:nil];
     NSLog(@"Process Network Connection！！！");
     [self.tabBarController addChildViewController:[WaterFlowViewController new]];
     self.tabBarController.delegate = self;
@@ -88,6 +93,38 @@
     self.titleLabel.text = [AppDelegate getSite];
     
 }
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self changeFrames:nil];
+}
+
+-(void)changeFrames:(NSNotification *)notification{
+    if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait
+        || [[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
+        NSLog(@"portrait");
+        [self.searchBarView setFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,44)];
+        [self.searchController.searchBar removeFromSuperview ];
+        self.searchController.searchBar.frame=CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,44);
+        [self.searchBarView addSubview:self.searchController.searchBar];
+        //        self.frame=CGRectMake(0, 0, height, width);
+        [AppDelegate setLineNumber:4];
+    }
+    else
+    {
+        NSLog(@"landscape");
+        [self.searchBarView setFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,44)];
+        [self.searchController.searchBar removeFromSuperview ];
+        self.searchController.searchBar.frame=CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,44);
+        [self.searchBarView addSubview:self.searchController.searchBar];
+//        self.frame=CGRectMake(0, 0, width, height);
+        [AppDelegate setLineNumber:6];
+    }
+    NSLog(@"view is %@",self);
+    NSLog(@"%f,%f",[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height);
+}
+
+
 - (IBAction)TestBtn_Click:(UIButton *)sender {
     WaterFlowViewController * con = [WaterFlowViewController new];
     [self.navigationController pushViewController:con animated:YES];
@@ -132,12 +169,13 @@
     [_searchController.searchBar setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     UIView *searchBarView = [[UIView alloc] initWithFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,44)];
     [searchBarView addSubview: _searchController.searchBar];
-    
+    self.searchBarView = searchBarView;
     //    _searchController.searchBar.frame = CGRectMake(0.0, 64.0 , ScreenWidth,44.0);
     [self.view addSubview:searchBarView];
 //    [self.view addSubview:self.searchController.searchBar];
     self.searchController.searchBar.delegate = self;
-    resultTVC.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
+    resultTVC.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 1)];
+    [self changeFrames:nil];
 }
 
 - (void)initTableViewWithDict:(NSNotification*)obj{

@@ -17,6 +17,8 @@ static NSString * limit;
 static NSString * ratting;
 static NSString * censore;
 
+static NSInteger lineNumber;
+
 @interface AppDelegate ()
 
 @end
@@ -65,6 +67,13 @@ static NSString * censore;
 }
 +(void)setLimit:(NSString *)str{
     limit = str;
+}
+
++(NSInteger)getLineNumber{
+    return lineNumber;
+}
++(void)setLineNumber:(NSInteger)i{
+    lineNumber = i;
 }
 
 +(NSString *)getRating{

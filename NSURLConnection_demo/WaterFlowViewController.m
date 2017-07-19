@@ -105,7 +105,7 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
     waterFlowViewLocal.dataSource = self;
     waterFlowViewLocal.delegate = self;
     //设置瀑布流列数
-    waterFlowViewLocal.columnNum = 2;
+    waterFlowViewLocal.columnNum = [AppDelegate getLineNumber];
     //设置cell与cell之间的水平间距
     waterFlowViewLocal.horizontalItemSpacing = 10;
     //设置cell与cell之间的垂直间距
@@ -121,6 +121,32 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
     
     
     // Do any additional setup after loading the view.
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self changeFrames:nil];
+}
+
+-(void)changeFrames:(NSNotification *)notification{
+    if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait
+        || [[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
+        NSLog(@"portrait");
+        [AppDelegate setLineNumber:4];
+        [waterFlowViewLocal setFrame:CGRectMake(0,[self getStateBarHeight], self.view.bounds.size.height, self.view.bounds.size.width - [self getStateBarHeight])];
+        waterFlowViewLocal.columnNum = [AppDelegate getLineNumber];
+        [waterFlowViewLocal reloadData];
+    }
+    else
+    {
+        NSLog(@"landscape");
+        [AppDelegate setLineNumber:6];
+        [waterFlowViewLocal setFrame:CGRectMake(0,[self getStateBarHeight], self.view.bounds.size.height, self.view.bounds.size.width - [self getStateBarHeight])];
+        waterFlowViewLocal.columnNum = [AppDelegate getLineNumber];
+        [waterFlowViewLocal reloadData];
+    }
+    NSLog(@"view is %@",self);
+    NSLog(@"%f,%f",[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height);
 }
 
 -(void)showTagsInfo{
@@ -167,8 +193,8 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
     }
     else{
         CGFloat cellHeight =[self.sourceHeight[indexPath.row] intValue] / ([self.sourceWidth[indexPath.row] intValue] / [self returnPictureMaxWidth]);
-        self.cellHeightDic[indexPath] = @(cellHeight);
-        return cellHeight;
+        self.cellHeightDic[indexPath] = @(cellHeight * 2 / [AppDelegate getLineNumber]);
+        return cellHeight * 2 / [AppDelegate getLineNumber];
     }
 }
 
