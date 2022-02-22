@@ -10,8 +10,10 @@
 #import "HUPhotoBrowserCell.h"
 #import "hu_const.h"
 #import "HUWebImage.h"
-#import "HUToast.h"
+#import <Photos/Photos.h>
 #import "MBProgressHUD.h"
+#import "UIImageView+HUWebImage.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface HUPhotoBrowser () <UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout> {
     CGRect _endTempFrame;
@@ -28,6 +30,7 @@
 @property (nonatomic, strong) UIView *toolBar;
 @property (nonatomic, weak) UILabel *countLab;
 @property (nonatomic, strong) NSArray *URLStrings;
+@property (nonatomic,strong) NSArray *fileSizes;
 @property (nonatomic) NSInteger index;
 @property (nonatomic) NSInteger imagesCount;
 @property (nonatomic, copy) DismissBlock dismissDlock;
@@ -55,6 +58,26 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:browser action:@selector(handleTap:)];
     [browser addGestureRecognizer:tap];
+    [SVProgressHUD setForegroundColor:[UIColor blackColor]];
+    
+    return browser;
+}
+
++ (instancetype)showFromImageView:(UIImageView *)imageView withURLStrings:(NSArray *)URLStrings fileSize:(NSArray *)fileSizes placeholderImage:(UIImage *)image atIndex:(NSInteger)index dismiss:(DismissBlock)block {
+    HUPhotoBrowser *browser = [[HUPhotoBrowser alloc] initWithFrame:kScreenRect];
+    browser.imageView = imageView;
+    browser.URLStrings = URLStrings;
+    browser.fileSizes = fileSizes;
+    browser.imagesCount = URLStrings.count;
+    [browser resetCountLabWithIndex:index+1];
+    [browser configureBrowser];
+    [browser animateImageViewAtIndex:index];
+    browser.placeholderImage = image;
+    browser.dismissDlock = block;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:browser action:@selector(handleTap:)];
+    [browser addGestureRecognizer:tap];
+    [SVProgressHUD setForegroundColor:[UIColor blackColor]];
     
     return browser;
 }
@@ -67,8 +90,7 @@
     [self dismiss];
 }
 
-
-+ (instancetype)showFromImageView:(UIImageView *)imageView withImages:(NSArray *)images placeholderImage:(UIImage *)image atIndex:(NSInteger)index dismiss:(DismissBlock)block {
++ (instancetype)showFromImageView:(UIImageView *)imageView withImages:(NSArray *)images atIndex:(NSInteger)index dismiss:(DismissBlock)block {
     HUPhotoBrowser *browser = [[HUPhotoBrowser alloc] initWithFrame:kScreenRect];
     browser.imageView = imageView;
     browser.images = images;
@@ -76,7 +98,6 @@
     [browser resetCountLabWithIndex:index+1];
     [browser configureBrowser];
     [browser animateImageViewAtIndex:index];
-    browser.placeholderImage = image;
     browser.dismissDlock = block;
     
     return browser;
@@ -88,7 +109,7 @@
 }
 
 + (instancetype)showFromImageView:(UIImageView *)imageView withImages:(NSArray *)images atIndex:(NSInteger)index {
-    return [self showFromImageView:imageView withImages:images placeholderImage:nil atIndex:index dismiss:nil];
+    return [self showFromImageView:imageView withImages:images atIndex:index dismiss:nil];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -127,9 +148,9 @@
     cell.indexPath = indexPath;
     [cell resetZoomingScale];
     __weak __typeof(self) wself = self;
-   // __weak __typeof(cell) wcell = cell;
     cell.tapActionBlock = ^(UITapGestureRecognizer *sender) {
-       // [wcell.imageView hu_cancelImageDownloadOperationForKey:@"downloadimage"];
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [SVProgressHUD dismiss];
         [wself dismiss];
     };
     if (self.URLStrings) {
@@ -144,13 +165,21 @@
                      _imageDidLoaded = YES;
                     NSLog(@"isDownloading");
                     if (_animationCompleted) {
+//                        self.collectionView.hidden = NO;
+//                        [_tmpImageView removeFromSuperview];
+//                        _animationCompleted = NO;
                         dispatch_async(dispatch_get_main_queue(), ^{
                             self.collectionView.hidden = NO;
                             [_tmpImageView removeFromSuperview];
                             _animationCompleted = NO;
                             [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
                         });
+                        
                     }
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+                        });
+//                   [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
                 }
             }];
         }
@@ -221,13 +250,13 @@
 }
 
 - (void)setupToolBar {
-    _toolBar = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-38, self.frame.size.width, 30)];
+    _toolBar = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-124, self.frame.size.width, 120)];
     _toolBar.backgroundColor = [UIColor clearColor];
     [self addSubview:_toolBar];
     
     UILabel *countLab = [[UILabel alloc] init];
     countLab.textColor = [UIColor whiteColor];
-    countLab.layer.cornerRadius = 2;
+    countLab.layer.cornerRadius = 8;
     countLab.layer.masksToBounds = YES;
     countLab.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.4];
     countLab.font = [UIFont systemFontOfSize:13];
@@ -236,9 +265,9 @@
     _countLab = countLab;
     
     UIButton *saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    saveBtn.frame = CGRectMake(_toolBar.frame.size.width-58, 1, 50, 28);
-    saveBtn.layer.cornerRadius = 2;
-    [saveBtn setBackgroundColor:[[UIColor blackColor]colorWithAlphaComponent:0.4]];
+    saveBtn.frame = CGRectMake(_toolBar.frame.size.width-72, 80, 60, 32);
+    saveBtn.layer.cornerRadius = 8;
+    [saveBtn setBackgroundColor:[[UIColor blackColor]colorWithAlphaComponent:0.3]];
     [saveBtn setTitle:@"保存" forState:UIControlStateNormal];
     [saveBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     saveBtn.titleLabel.font = [UIFont systemFontOfSize:13];
@@ -246,15 +275,35 @@
     [_toolBar addSubview:saveBtn];
     
     UIButton *infoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    infoBtn.frame = CGRectMake(_toolBar.frame.size.width-116, 1, 50, 28);
-    infoBtn.layer.cornerRadius = 2;
-    [infoBtn setBackgroundColor:[[UIColor blackColor]colorWithAlphaComponent:0.4]];
+    infoBtn.frame = CGRectMake(_toolBar.frame.size.width-72, 40, 60, 32);
+    infoBtn.layer.cornerRadius = 8;
+    [infoBtn setBackgroundColor:[[UIColor blackColor]colorWithAlphaComponent:0.3]];
     [infoBtn setTitle:@"Tags" forState:UIControlStateNormal];
     [infoBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     infoBtn.titleLabel.font = [UIFont systemFontOfSize:13];
     [infoBtn addTarget:self action:@selector(checkPictureTags) forControlEvents:UIControlEventTouchUpInside];
     [_toolBar addSubview:infoBtn];
     _needShowTags = NO;
+    
+    UIButton *downloadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    downloadBtn.frame = CGRectMake(_toolBar.frame.size.width-72, 0, 60, 32);
+    downloadBtn.layer.cornerRadius = 8;
+    [downloadBtn setBackgroundColor:[[UIColor blackColor]colorWithAlphaComponent:0.3]];
+    [downloadBtn setTitle:@"下载" forState:UIControlStateNormal];
+    [downloadBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    downloadBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+    [downloadBtn addTarget:self action:@selector(toDownload) forControlEvents:UIControlEventTouchUpInside];
+    [_toolBar addSubview:downloadBtn];
+}
+
+-(void)toDownload{
+    NSString *url = self.URLStrings[[NSIndexPath indexPathForRow:_currentPage inSection:0].row];
+    NSNumber *size = self.fileSizes[[NSIndexPath indexPathForRow:_currentPage inSection:0].row];
+    NSDictionary *dict= @{@"url":url , @"size":size};
+    NSLog(@"%@",url);
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"addToDownload" object:nil userInfo:dict];
+    NSString *msg = @"添加到下载队列";
+    [SVProgressHUD showSuccessWithStatus:msg];
 }
 
 -(void)checkPictureTags{
@@ -289,7 +338,10 @@
     
     _endTempFrame = endFrame;
     
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_9_0
+    
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+#endif
     
     UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:startFrame];
     tempImageView.image = self.imageView.image;
@@ -310,9 +362,11 @@
     } completion:^(BOOL finished) {
         _currentPage = index;
         _animationCompleted = YES;
-        if(!self.images && !_imageDidLoaded)
+        if(!self.images && !_imageDidLoaded){
             [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES userInterface:NO];
-        if (self.images || _imageDidLoaded) {
+        }
+        if (self.images || _imageDidLoaded || (self.URLStrings && !_imageDidLoaded)) {
+            
             self.collectionView.hidden = NO;
             [tempImageView removeFromSuperview];
             _animationCompleted = NO;
@@ -324,9 +378,9 @@
 }
 
 - (void)dismiss {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_9_0
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    
-    
+#endif
     
     if (self.dismissDlock) {
         HUPhotoBrowserCell *cell = (HUPhotoBrowserCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage inSection:0]];
@@ -365,6 +419,7 @@
             [dict setValue:[NSString stringWithFormat:@"%d",self.index] forKey:@"index"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"needShowTags" object:nil userInfo:dict];
         }
+        
     }];
     
 }
@@ -373,15 +428,79 @@
     
     NSString *text = [NSString stringWithFormat:@"%zd%zd",_imagesCount,_imagesCount];
     CGFloat width = [text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]}].width+8;
-    _countLab.frame = CGRectMake(8, 1, MAX(50, width), 28);
+    _countLab.frame = CGRectMake(12, 84, MAX(50, width), 28);
     _countLab.text = [NSString stringWithFormat:@"%zd/%zd",index,_imagesCount];
 }
+
+- (PHAssetCollection * )createCollection{
+    // 创建一个新的相册
+    // 查看所有的自定义相册
+    // 先查看是否有自己要创建的自定义相册
+    // 如果没有自己要创建的自定义相册那么我们就进行创建
+    NSString * title = @"Moe_Image";
+    PHFetchResult<PHAssetCollection *> *collections =  [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+    
+    PHAssetCollection * createCollection = nil; // 最终要获取的自己创建的相册
+    for (PHAssetCollection * collection in collections) {
+        if ([collection.localizedTitle isEqualToString:title]) {    // 如果有自己要创建的相册
+            createCollection = collection;
+            break;
+        }
+    }
+    if (createCollection == nil) {  // 如果没有自己要创建的相册
+        // 创建自己要创建的相册
+        NSError * error1 = nil;
+        __block NSString * createCollectionID = nil;
+        [[PHPhotoLibrary sharedPhotoLibrary] performChangesAndWait:^{
+            createCollectionID = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:title].placeholderForCreatedAssetCollection.localIdentifier;
+        } error:&error1];
+        
+        if (error1) {
+            NSLog(@"创建相册失败...");
+        }
+        // 创建相册之后我们还要获取此相册  因为我们要往进存储相片
+        createCollection = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[createCollectionID] options:nil].firstObject;
+    }
+    
+    return createCollection;
+}
+
+-(PHFetchResult<PHAsset *> *)createAssetWithImage:(UIImage *)image{
+    NSError * error = nil;
+    __block NSString * assetID = nil;
+    [[PHPhotoLibrary sharedPhotoLibrary] performChangesAndWait:^{
+        assetID =  [PHAssetChangeRequest creationRequestForAssetFromImage:image].placeholderForCreatedAsset.localIdentifier;
+    } error:&error];
+    if (error) return nil;
+    return [PHAsset fetchAssetsWithLocalIdentifiers:@[assetID] options:nil];
+}
+
+
 
 - (void)saveImae {
     HUPhotoBrowserCell *cell = (HUPhotoBrowserCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage inSection:0]];
     UIImage *seavedImage = cell.imageView.image;
     if (seavedImage) {
-         UIImageWriteToSavedPhotosAlbum(seavedImage, self, @selector(imageSavedToPhotosAlbum:didFinishSavingWithError:contextInfo:), nil);
+        NSError * error = nil;
+        PHAssetCollection *createdCollection = [self createCollection];
+        PHFetchResult<PHAsset *> *asset = [self createAssetWithImage:seavedImage];
+        [[PHPhotoLibrary sharedPhotoLibrary] performChangesAndWait:^{
+            PHAssetCollectionChangeRequest * request = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:createdCollection];
+            [request insertAssets:asset atIndexes:[NSIndexSet indexSetWithIndex:0]];
+        } error:&error];
+        NSString *msg = nil ;
+        if (!error){
+            NSLog(@"%@",error);
+            msg = @"保存图片成功";
+            [SVProgressHUD showSuccessWithStatus:msg];
+//            [[[UIAlertView alloc] initWithTitle:@"提示" message:@"图片已保存！" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil] show] ;
+            
+        }else{
+            NSLog(@"%@",error);
+            msg = @"保存图片失败";
+            [SVProgressHUD showInfoWithStatus:msg];
+        }
+//         UIImageWriteToSavedPhotosAlbum(seavedImage, self, @selector(imageSavedToPhotosAlbum:didFinishSavingWithError:contextInfo:), nil);
     }
    
 }
@@ -391,11 +510,13 @@
     NSString *msg = nil ;
     if(error != nil){
         msg = @"保存图片失败";
+        [SVProgressHUD showInfoWithStatus:msg];
     }
     else{
         msg = @"保存图片成功";
+        [SVProgressHUD showSuccessWithStatus:msg];
     }
-    [HUToast showToastWithMsg:msg];
+    
 }
 
 @end

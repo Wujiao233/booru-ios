@@ -15,6 +15,7 @@
 #import "MBProgressHUD.h"
 #import "TagsEditViewController.h"
 #import "BooruNetwork.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 static const CGFloat delayTiemSecond = 3.0;
 //static const NSInteger BGPageCount = 100;
@@ -34,6 +35,7 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
 @property (nonatomic, strong) NSMutableArray *sourceWidth;
 @property (nonatomic, strong) NSMutableArray *sourceHeight;
 @property (nonatomic, strong) NSMutableArray *sourceTags;
+@property (nonatomic, strong) NSMutableArray *fileSize; //Size
 @property (nonatomic, assign) int page;
 
 
@@ -66,8 +68,23 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [self loadNewRefreshData:waterFlowViewLocal];
         self.isFromFilter = NO;
-        self.title = [AppDelegate getTags];
+        self.title = [AppDelegate getOriTags];
     }
+}
+
+-(Boolean)checkSizeTypeWithWidth:(double)width AndHeight:(double)height{
+    if([[AppDelegate getSizeType] isEqualToString:@"Height > Width"]){
+        if(height > width){
+            return true;
+        }
+        return false;
+    }else if([[AppDelegate getSizeType] isEqualToString:@"Width >= Height"]){
+        if(width >= height){
+            return true;
+        }
+        return false;
+    }
+    return true;
 }
 
 -(id)initWithDict:(NSMutableArray *)dict{
@@ -78,21 +95,34 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
         self.dataList =  [NSMutableArray new];
         self.cellHeightDic = [NSMutableDictionary new];
         self.sourceTags = [NSMutableArray new];
+        self.fileSize = [NSMutableArray new];
         for(int i=0;i<dict.count;i++){
-            [self.sourceArr addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"file_url"]]];
-            [self.dataList addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"preview_url"]]];
+            if(![self checkSizeTypeWithWidth:[[NSString stringWithFormat:@"%@",dict[i][@"actual_preview_width"]] doubleValue] AndHeight:[[NSString stringWithFormat:@"%@",dict[i][@"actual_preview_height"]] doubleValue]]){
+                continue;
+            }
+            if([dict[i][@"file_url"] hasPrefix:@"http"]){
+                [self.sourceArr addObject:[NSString stringWithFormat:@"%@",dict[i][@"file_url"]]];
+            }else{
+                [self.sourceArr addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"file_url"]]];
+            }
+            if([dict[i][@"preview_url"] hasPrefix:@"http"]){
+                [self.dataList addObject:[NSString stringWithFormat:@"%@",dict[i][@"preview_url"]]];
+            }else{
+                [self.dataList addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"preview_url"]]];
+            }
             [self.sourceWidth addObject:dict[i][@"actual_preview_width"]];
             [self.sourceHeight addObject:dict[i][@"actual_preview_height"]];
             [self.sourceTags addObject:dict[i][@"tags"]];
+            [self.fileSize addObject:dict[i][@"file_size"]];
         }
     }
-    NSLog(@"%@",self.dataList);
+    NSLog(@"%@",self.fileSize);
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = [AppDelegate getTags];
+    self.title = [AppDelegate getOriTags];
     self.page = 1;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadNewRefreshDataFinished:) name:@"waterFlow" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadMoreRefreshDataFinished:) name:@"waterFlowMore" object:nil];
@@ -129,32 +159,61 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
 }
 
 -(void)changeFrames:(NSNotification *)notification{
-    if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait
-        || [[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
-        NSLog(@"portrait");
-        [AppDelegate setLineNumber:4];
-        [waterFlowViewLocal setFrame:CGRectMake(0,[self getStateBarHeight], self.view.bounds.size.height, self.view.bounds.size.width - [self getStateBarHeight])];
-        waterFlowViewLocal.columnNum = [AppDelegate getLineNumber];
-        [waterFlowViewLocal reloadData];
+    NSString *device = [[UIDevice currentDevice].model substringToIndex:4];
+    if ([device isEqualToString:@"iPho"]){
+        if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait
+            || [[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
+            NSLog(@"portrait");
+            [AppDelegate setLineNumber:2];
+            [waterFlowViewLocal setFrame:CGRectMake(0,[self getStateBarHeight], self.view.bounds.size.height, self.view.bounds.size.width - [self getStateBarHeight])];
+            waterFlowViewLocal.columnNum = [AppDelegate getLineNumber];
+            [waterFlowViewLocal reloadData];
+        }
+        else
+        {
+            NSLog(@"landscape");
+            [AppDelegate setLineNumber:4];
+            [waterFlowViewLocal setFrame:CGRectMake(0,[self getStateBarHeight] - 44, self.view.bounds.size.height, self.view.bounds.size.width - [self getStateBarHeight] + 44)];
+            waterFlowViewLocal.columnNum = [AppDelegate getLineNumber];
+            [waterFlowViewLocal reloadData];
+        }
+        NSLog(@"view is %@",self);
+        NSLog(@"%f,%f",[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height);
+    }else{
+        if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait
+            || [[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
+            NSLog(@"portrait");
+            [AppDelegate setLineNumber:4];
+            [waterFlowViewLocal setFrame:CGRectMake(0,[self getStateBarHeight], self.view.bounds.size.height, self.view.bounds.size.width - [self getStateBarHeight])];
+            waterFlowViewLocal.columnNum = [AppDelegate getLineNumber];
+            [waterFlowViewLocal reloadData];
+        }
+        else
+        {
+            NSLog(@"landscape");
+            [AppDelegate setLineNumber:6];
+            [waterFlowViewLocal setFrame:CGRectMake(0,[self getStateBarHeight], self.view.bounds.size.height, self.view.bounds.size.width - [self getStateBarHeight])];
+            waterFlowViewLocal.columnNum = [AppDelegate getLineNumber];
+            [waterFlowViewLocal reloadData];
+        }
+        NSLog(@"view is %@",self);
+        NSLog(@"%f,%f",[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height);
     }
-    else
-    {
-        NSLog(@"landscape");
-        [AppDelegate setLineNumber:6];
-        [waterFlowViewLocal setFrame:CGRectMake(0,[self getStateBarHeight], self.view.bounds.size.height, self.view.bounds.size.width - [self getStateBarHeight])];
-        waterFlowViewLocal.columnNum = [AppDelegate getLineNumber];
-        [waterFlowViewLocal reloadData];
-    }
-    NSLog(@"view is %@",self);
-    NSLog(@"%f,%f",[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height);
+    
 }
 
 -(void)showTagsInfo{
-    NSInteger index = arc4random() % self.sourceTags.count;
-    NSArray * tmpArray = [self.sourceTags[index] componentsSeparatedByString:@" "];
-    TagsEditViewController * con = [[TagsEditViewController alloc]initWithDict:tmpArray];
-    self.isFromFilter = YES;
-    [self.navigationController pushViewController:con animated:YES];
+    //没有图片的情况
+    if([self.sourceArr count] <= 0){
+        NSString *msg = @"没有找到Tag";
+        [SVProgressHUD showInfoWithStatus:msg];
+    }else{
+        NSInteger index = arc4random() % self.sourceTags.count;
+        NSArray * tmpArray = [self.sourceTags[index] componentsSeparatedByString:@" "];
+        TagsEditViewController * con = [[TagsEditViewController alloc]initWithDict:tmpArray];
+        self.isFromFilter = YES;
+        [self.navigationController pushViewController:con animated:YES];
+    }
 }
 
 -(void)showTagsInfo:(NSNotification*)obj{
@@ -205,7 +264,8 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
     [cell setNeedsLayout];
 //    NSString * url = [NSString stringWithFormat:@"http:%@",self.sourceArr[indexPath.row]];
 
-    [HUPhotoBrowser showFromImageView:nil withURLStrings:self.sourceArr placeholderImage:[UIImage imageNamed:@"placeholder"] atIndex:indexPath.row dismiss:nil];
+//    [HUPhotoBrowser showFromImageView:nil withURLStrings:self.sourceArr placeholderImage:[UIImage imageNamed:@"placeholder"] atIndex:indexPath.row dismiss:nil];
+    [HUPhotoBrowser showFromImageView:nil withURLStrings:self.sourceArr fileSize:self.fileSize placeholderImage:[UIImage imageNamed:@"placeholder"] atIndex:indexPath.row dismiss:nil];
 }
 
 #pragma mark - BGRefreshWaterFlowViewDelegate method
@@ -231,11 +291,25 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
     [self.sourceWidth removeAllObjects];
     [self.sourceHeight removeAllObjects];
     for(int i=0;i<dict.count;i++){
-        [self.sourceArr addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"file_url"]]];
-        [self.dataList addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"preview_url"]]];
+        if(![self checkSizeTypeWithWidth:[[NSString stringWithFormat:@"%@",dict[i][@"actual_preview_width"]] doubleValue] AndHeight:[[NSString stringWithFormat:@"%@",dict[i][@"actual_preview_height"]] doubleValue]]){
+             continue;
+        }
+        if([dict[i][@"file_url"] hasPrefix:@"http"]){
+            [self.sourceArr addObject:[NSString stringWithFormat:@"%@",dict[i][@"file_url"]]];
+        }else{
+            [self.sourceArr addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"file_url"]]];
+        }
+        if([dict[i][@"preview_url"] hasPrefix:@"http"]){
+            [self.dataList addObject:[NSString stringWithFormat:@"%@",dict[i][@"preview_url"]]];
+        }else{
+            [self.dataList addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"preview_url"]]];
+        }
+//        [self.sourceArr addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"file_url"]]];
+//        [self.dataList addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"preview_url"]]];
         [self.sourceWidth addObject:dict[i][@"actual_preview_width"]];
         [self.sourceHeight addObject:dict[i][@"actual_preview_height"]];
         [self.sourceTags addObject:dict[i][@"tags"]];
+        [self.fileSize addObject:dict[i][@"file_size"]];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         [waterFlowViewLocal reloadData];
@@ -266,11 +340,25 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
         waterFlowViewLocal.isLoadMore = YES;
     }
     for(int i=0;i<dict.count;i++){
-        [self.sourceArr addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"file_url"]]];
-        [self.dataList addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"preview_url"]]];
+        if(![self checkSizeTypeWithWidth:[[NSString stringWithFormat:@"%@",dict[i][@"actual_preview_width"]] doubleValue] AndHeight:[[NSString stringWithFormat:@"%@",dict[i][@"actual_preview_height"]] doubleValue]]){
+             continue;
+        }
+        if([dict[i][@"file_url"] hasPrefix:@"http"]){
+            [self.sourceArr addObject:[NSString stringWithFormat:@"%@",dict[i][@"file_url"]]];
+        }else{
+            [self.sourceArr addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"file_url"]]];
+        }
+        if([dict[i][@"preview_url"] hasPrefix:@"http"]){
+            [self.dataList addObject:[NSString stringWithFormat:@"%@",dict[i][@"preview_url"]]];
+        }else{
+            [self.dataList addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"preview_url"]]];
+        }
+//        [self.sourceArr addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"file_url"]]];
+//        [self.dataList addObject:[NSString stringWithFormat:@"http:%@",dict[i][@"preview_url"]]];
         [self.sourceWidth addObject:dict[i][@"actual_preview_width"]];
         [self.sourceHeight addObject:dict[i][@"actual_preview_height"]];
         [self.sourceTags addObject:dict[i][@"tags"]];
+        [self.fileSize addObject:dict[i][@"file_size"]];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         [waterFlowViewLocal reloadData];

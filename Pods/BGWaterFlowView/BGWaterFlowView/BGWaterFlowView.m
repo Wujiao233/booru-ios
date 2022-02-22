@@ -47,7 +47,13 @@ static NSString * const BGCollectionRefreshFooterView = @"BGCollectionRefreshFoo
     collectionView.alwaysBounceVertical = YES;
     collectionView.dataSource = self;
     collectionView.delegate = self;
-    collectionView.backgroundColor = [UIColor whiteColor];
+    if (@available(iOS 13.0, *)) {
+        collectionView.backgroundColor = [UIColor systemBackgroundColor];
+    } else {
+        // Fallback on earlier versions
+        collectionView.backgroundColor = [UIColor whiteColor];
+    }
+
     [self addSubview:collectionView];
     
     self.waterFlowLayout = waterFlowLayout;

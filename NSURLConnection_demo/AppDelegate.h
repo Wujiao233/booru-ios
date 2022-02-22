@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-
+#import "DownloadManagerViewModel.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>{
     
@@ -33,8 +33,18 @@
 +(void)setCensore:(NSString *)str;
 +(NSInteger)getLineNumber;
 +(void)setLineNumber:(NSInteger)i;
++(NSString *)getSizeType;
++(void)setSizeType:(NSString *)str;
+
+
++(NSInteger)getHeightLimit;
++(void)setHeightLimit:(NSInteger)i;
++(NSInteger)getWidthLimit;
++(void)setWidthLimit:(NSInteger)i;
 
 +(void)addHistory:(NSString *)tag;
+
++(DownloadManagerViewModel *)getDownloadVM;
 
 @end
 

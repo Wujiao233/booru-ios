@@ -22,6 +22,8 @@
 +(void)getPostFromServerWithTag:(NSString *)tags Page:(int)page WithNotificationId:(NSString *)code Limit:(int)limit{
     tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL * url = [NSURL URLWithString: [[SiteMethodMapper getSiteMethodMapper] getRequestUrlWithKey:[AppDelegate getSite] Tags:tags Page:page Limit:limit]];
+    
+    NSLog(@"%@",url);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSLog(@"%@",[request allHTTPHeaderFields]);
     request.HTTPMethod = @"GET";

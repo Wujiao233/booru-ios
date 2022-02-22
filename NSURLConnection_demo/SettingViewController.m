@@ -9,11 +9,14 @@
 #import "SettingViewController.h"
 #import "AppDelegate.h"
 #import "SiteMethodMapper.h"
+#import "UIImageView+WebCache.h"
 
 @interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource>{
 //    NSMutableArray * siteArray;
 }
 @property (weak, nonatomic) IBOutlet UINavigationBar *_selfNavigationBar;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *topView;
 
 @end
 
@@ -25,6 +28,12 @@
     self.title = @"Setting";   
     [self drawTableView];
     self._selfNavigationBar.topItem.title = @"Setting";
+    [self.topView setBackgroundColor:self._selfNavigationBar.barTintColor];
+    
+    
+    
+    
+    
     //self.automaticallyAdjustsScrollViewInsets = NO;
 //    siteArray = [[NSMutableArray alloc]initWithArray:@[@"1",@"0"]];
     // Do any additional setup after loading the view.
@@ -41,10 +50,12 @@
         [[NSUserDefaults standardUserDefaults]setObject:[tableView cellForRowAtIndexPath:indexPath].textLabel.text forKey:@"imageLevel"];
         [[NSUserDefaults standardUserDefaults]synchronize];
         [AppDelegate setImageLevel:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
-    }else{
+    }else if(indexPath.section == 2){
         [[NSUserDefaults standardUserDefaults]setObject:[tableView cellForRowAtIndexPath:indexPath].textLabel.text forKey:@"limit"];
         [[NSUserDefaults standardUserDefaults]synchronize];
         [AppDelegate setLimit:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+    }else{
+        [[SDImageCache sharedImageCache] clearDisk];
     }
     NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:0];
     [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
@@ -52,15 +63,16 @@
     [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
     indexSet=[[NSIndexSet alloc]initWithIndex:2];
     [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-
+    indexSet=[[NSIndexSet alloc]initWithIndex:3];
+    [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)drawTableView{
-    UITableView *tview = [[UITableView alloc] initWithFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height - 64) style:UITableViewStyleGrouped];
-    [tview setDelegate:self];
-    [tview setDataSource:self];
-    [self.view addSubview:tview];
-    tview.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,  24)];
+//    UITableView *tview = [[UITableView alloc] initWithFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height - 64) style:UITableViewStyleGrouped];
+    [self.tableView setDelegate:self];
+    [self.tableView setDataSource:self];
+//    [self.view addSubview:tview];
+    self.tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,  24)];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,10 +86,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 0)return [[[SiteMethodMapper getSiteMethodMapper] getSiteMapKeys] count];
     if(section == 1)return 2;
+    if(section == 3)return 1;
     return 3;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -117,6 +130,19 @@
             if([cell.textLabel.text isEqualToString:[AppDelegate getLimit]]){
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
+            break;
+        case 3:
+            if(row == 0){
+                NSUInteger tmpSize = [[SDImageCache sharedImageCache] getSize];
+                NSLog(@"%lu",(unsigned long)tmpSize);
+                if(tmpSize > (1024*1024)){
+                    cell.textLabel.text =[NSString stringWithFormat:@"已用空间:%.2lfMB",tmpSize / 1024.0 / 1024.0];
+                }else if(tmpSize > 1024){
+                    cell.textLabel.text =[NSString stringWithFormat:@"已用空间:%.2lfKB",tmpSize / 1024.0];
+                }else{
+                    cell.textLabel.text =[NSString stringWithFormat:@"已用空间:%@B",@(tmpSize)];
+                }
+            }
         default:
             break;
     }
@@ -129,8 +155,10 @@
         return @"查询站点";
     }else if(section == 1){
         return @"预览质量";
-    }else{
+    }else if(section == 2){
         return @"每页加载数量";
+    }else{
+        return @"缓存";
     }
 }
 

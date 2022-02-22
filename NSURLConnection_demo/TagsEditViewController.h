@@ -12,3 +12,5 @@
 
 -(id)initWithDict:(NSArray *)dict;
 @end
+//TODO: 添加按分辨率筛选
+

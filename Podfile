@@ -1,7 +1,10 @@
-platform :ios ,'7.0'
 
+platform :ios ,'11.0'
+project “NSURLConnection_demo.xcodeproj”
 target "NSURLConnection_demo" do
 pod 'MBProgressHUD'
 pod 'BGWaterFlowView'
-pod 'HUPhotoBrowser','~> 1.1.3' 
+pod 'ReactiveCocoa', ‘2.3.1’ 
+pod ‘HUPhotoBrowser’
+pod 'MJRefresh'
 end

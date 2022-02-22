@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '59D37C0C25CB8D199F89FCAA1E449385'
-               BlueprintName = 'Pods-NSURLConnection_demo'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libPods-NSURLConnection_demo.a'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F3567DCF5363406984C78E974D43A4F2"
+               BlueprintName = "Pods-NSURLConnection_demo"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "libPods-NSURLConnection_demo.a">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

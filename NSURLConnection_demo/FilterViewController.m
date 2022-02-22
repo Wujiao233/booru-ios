@@ -11,9 +11,13 @@
 
 @interface FilterViewController ()<UITableViewDelegate,UITableViewDataSource>{
     NSMutableArray * ratingArray;
+    NSMutableArray * sizeArray;
     NSMutableArray * centArray;
     NSString * keyword_censore;
     NSString * keyword_ratting;
+    NSString * keyword_sizetype;
+    NSInteger heightLimit;
+    NSInteger widthLimit;
     
 }
 
@@ -31,7 +35,7 @@
         [self refreshTagsKeyword];
         NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:0];
         [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-    }else{
+    }else if(indexPath.section == 1){
         if(indexPath.row != 0){
             keyword_censore = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
         }else{
@@ -39,6 +43,55 @@
         }
         [self refreshTagsKeyword];
         NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:1];
+        [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+    }else if(indexPath.section == 2){
+        if(indexPath.row == 0){
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"修改高度限制" message:@"Width:>=" preferredStyle:UIAlertControllerStyleAlert];
+            //增加确定按钮；
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //获取第1个输入框；
+                UITextField *textField = alertController.textFields.firstObject;
+                NSLog(@"Tag = %@",textField.text);
+                self->widthLimit = [textField.text integerValue];
+                NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:2];
+                [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+            }]];
+            //增加取消按钮；
+            [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+            //定义第一个输入框；
+            [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.placeholder = @"输入0禁用";
+                textField.keyboardType = UIKeyboardTypeNumberPad;
+            }];
+            [self presentViewController:alertController animated:true completion:nil];
+        }else{
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"修改高度限制" message:@"Height:>=" preferredStyle:UIAlertControllerStyleAlert];
+            //增加确定按钮；
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //获取第1个输入框；
+                UITextField *textField = alertController.textFields.firstObject;
+                NSLog(@"Tag = %@",textField.text);
+                self->heightLimit = [textField.text integerValue];
+                NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:2];
+                [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+            }]];
+            //增加取消按钮；
+            [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+            //定义第一个输入框；
+            [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.placeholder = @"输入0禁用";
+                textField.keyboardType = UIKeyboardTypeNumberPad;
+            }];
+            [self presentViewController:alertController animated:true completion:nil];
+        }
+    }else{
+        if(indexPath.row != 0){
+            keyword_sizetype = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+        }else{
+            keyword_sizetype = @"All";
+        }
+        [self refreshTagsKeyword];
+        NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:3];
         [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
     }
 }
@@ -48,9 +101,13 @@
     [self setTitle:@"Filter"];
     ratingArray = [[NSMutableArray alloc]initWithObjects:@"1",@"0",@"0",@"0", nil];
     centArray = [[NSMutableArray alloc]initWithObjects:@"1",@"0",@"0", nil];
+    sizeArray =[[NSMutableArray alloc]initWithObjects:@"1",@"0",@"0", nil];
 //    keyword = [[AppDelegate getTags] lowercaseString];
     keyword_ratting = [AppDelegate getRating];
     keyword_censore = [AppDelegate getCensore];
+    keyword_sizetype = [AppDelegate getSizeType];
+    heightLimit = [AppDelegate getHeightLimit];
+    widthLimit = [AppDelegate getWidthLimit];
     [self refreshTagsKeyword];
     [self drawTableView];
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -62,6 +119,9 @@
 -(void)refreshData{
     [AppDelegate setRating:keyword_ratting];
     [AppDelegate setCensore:keyword_censore];
+    [AppDelegate setSizeType:keyword_sizetype];
+    [AppDelegate setHeightLimit:heightLimit];
+    [AppDelegate setWidthLimit:widthLimit];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -83,10 +143,12 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 1)return 3;
-    return 4;
+    if(section == 0)return 4;
+    if(section == 2)return 2;
+    return 3;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 4;
 }
 
 - (void)refreshTagsKeyword{
@@ -114,6 +176,19 @@
     }else{
         centArray[0] = @"1";
     }
+    
+    for(int i=0;i<sizeArray.count;i++){
+        sizeArray[i] = @"0";
+    }
+    
+    if([keyword_sizetype isEqualToString:@"Width >= Height"]){
+        sizeArray[1] = @"1";
+    }else if([keyword_sizetype isEqualToString:@"Height > Width"]){
+        sizeArray[2] = @"1";
+    }else{
+        sizeArray[0] = @"1";
+    }
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -145,6 +220,17 @@
                     cell.accessoryType = UITableViewCellAccessoryCheckmark;
                 }
                 break;
+            case 2:
+                if(row == 0)cell.textLabel.text = [NSString stringWithFormat:@"Width:%@ %ldpx",@">=",self->widthLimit];
+                if(row == 1)cell.textLabel.text = [NSString stringWithFormat:@"Height:%@ %ldpx",@">=",self->heightLimit];
+                break;
+            case 3:
+                if(row == 0)cell.textLabel.text =  @"All";
+                if(row == 1)cell.textLabel.text =  @"Width >= Height";
+                if(row == 2)cell.textLabel.text =  @"Height > Width";
+                if([sizeArray[row] isEqualToString:@"1"]){
+                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                }
             default:
                 break;
         }
@@ -155,8 +241,12 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if(section == 0){
         return @"分级选择";
-    }else{
+    }else if(section == 1){
         return @"审核";
+    }else if(section == 2){
+        return @"尺寸限制";
+    }else{
+        return @"宽高比较";
     }
 }
 

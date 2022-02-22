@@ -60,11 +60,16 @@ static SiteMethodMapper * siteMethodMapper;
         return dict;
     } forKey:@"Konachan"];
     
+    // https://gelbooru.com/index.php?page=dapi&s=post&q=index&tags=loli&pid=1&limit=50
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
+        tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
+        tags = [tags stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+        tags = [tags stringByReplacingOccurrencesOfString:@"(" withString:@"%28"];
+        tags = [tags stringByReplacingOccurrencesOfString:@")" withString:@"%29"];
         NSString * param = [NSString stringWithFormat:@"page=dapi&s=post&q=index&tags=%@&pid=%d&limit=%d",tags,page-1,limit];
-        NSString * result = [NSString stringWithFormat:@"http://gelbooru.com/index.php?%@",param];
+        NSString * result = [NSString stringWithFormat:@"https://gelbooru.com/index.php?%@",param];
         return result;
     } forKey:@"Gelbooru"];
     
@@ -87,6 +92,7 @@ static SiteMethodMapper * siteMethodMapper;
             }else{
                 [tmpDict setValue:[[ele attributeForName:@"sample_url"]stringValue] forKey:@"preview_url"];
             }
+            [tmpDict setValue:[NSNumber numberWithInteger:0] forKey:@"file_size"];
             [resArray addObject:tmpDict];
         }
         return (NSDictionary *)resArray;
@@ -95,8 +101,10 @@ static SiteMethodMapper * siteMethodMapper;
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
+        tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
         NSString * param = [NSString stringWithFormat:@"tags=%@&page=%d&limit=%d",tags,page,limit];
         NSString * result = [NSString stringWithFormat:@"http://yande.re/post.json?%@",param];
+        NSLog(@"%@", result);
         return result;
     } forKey:@"Yande"];
     
@@ -114,6 +122,7 @@ static SiteMethodMapper * siteMethodMapper;
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
+        tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
         NSString * param = [NSString stringWithFormat:@"tags=%@&page=%d&limit=%d",tags,page,limit];
         NSString * result = [NSString stringWithFormat:@"http://danbooru.donmai.us/posts.json?%@",param];
         return result;
@@ -195,6 +204,7 @@ static SiteMethodMapper * siteMethodMapper;
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
+        tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
         NSString * param = [NSString stringWithFormat:@"page=dapi&s=post&q=index&tags=%@&pid=%d&limit=%d",tags,page-1,limit];
         NSString * result = [NSString stringWithFormat:@"http://xbooru.com/index.php?%@",param];
         return result;
@@ -219,6 +229,7 @@ static SiteMethodMapper * siteMethodMapper;
             }else{
                 [tmpDict setValue:[[[ele attributeForName:@"sample_url"]stringValue]stringByReplacingOccurrencesOfString:@"http:" withString:@""] forKey:@"preview_url"];
             }
+            [tmpDict setValue:[NSNumber numberWithInteger:0] forKey:@"file_size"];
             [resArray addObject:tmpDict];
         }
         return (NSDictionary *)resArray;
@@ -227,6 +238,7 @@ static SiteMethodMapper * siteMethodMapper;
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
+        tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
         NSString * param = [NSString stringWithFormat:@"page=dapi&s=post&q=index&tags=%@&pid=%d&limit=%d",tags,page-1,limit];
         NSString * result = [NSString stringWithFormat:@"http://rule34.xxx/index.php?%@",param];
         return result;
@@ -251,10 +263,79 @@ static SiteMethodMapper * siteMethodMapper;
             }else{
                 [tmpDict setValue:[[ele attributeForName:@"sample_url"]stringValue] forKey:@"preview_url"];
             }
+            [tmpDict setValue:[NSNumber numberWithInteger:0] forKey:@"file_size"];
             [resArray addObject:tmpDict];
         }
         return (NSDictionary *)resArray;
     } forKey:@"Rule34"];
+    
+    //http://konachan.zju.link/pws.php?tags=&page=1
+//    [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+//        tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+//        tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
+//        NSString * param = [NSString stringWithFormat:@"tags=%@&page=%d&limit=%d",tags,page-1,limit];
+//        NSString * result = [NSString stringWithFormat:@"http://konachan.zju.link/pws.php?%@",param];
+//        return result;
+//    } forKey:@"PornographyWithStandards"];
+//
+//    [siteMethodMap setObject:(NSDictionary *)^(NSMutableData * data){
+//        NSError * jsonError;
+//        NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//        NSLog(@"%@",str);
+//        NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[str dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&jsonError];
+//        NSMutableArray * tmpArray = (NSMutableArray *)dict;
+//        for(int i=0;i<[tmpArray count];i++){
+//            [tmpArray[i] setValue:@"400" forKey:@"actual_preview_height"];
+//            [tmpArray[i] setValue:@"400" forKey:@"actual_preview_width"];
+//            tmpArray[i][@"preview_url" ] = [tmpArray[i][@"preview_url"] stringByReplacingOccurrencesOfString:@"http:" withString:@""];
+//            tmpArray[i][@"file_url"] = [tmpArray[i][@"file_url"] stringByReplacingOccurrencesOfString:@"http:" withString:@""];
+//
+//            if([[AppDelegate getImageLevel]isEqualToString:@"Low"]){
+//                //acc
+//            }else{
+//                tmpArray[i][@"preview_url"] = tmpArray[i][@"file_url"];
+//            }
+////            tmpArray[i][@"actual_preview_height"] = @"400";
+////            tmpArray[i][@"actual_preview_width"] = @"400";
+////            tmpArray[i][@"file_url"] = [NSString stringWithFormat:@"//konachan.zju.link/behoimi_image.php?url=%@",tmpArray[i][@"file_url"]];
+//        }
+//        return dict;
+//    } forKey:@"PornographyWithStandards"];
+    
+    [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+        tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
+        tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
+        NSString * param = [NSString stringWithFormat:@"tags=%@&page=%d&limit=%d",tags,page-1,limit];
+        NSString * result = [NSString stringWithFormat:@"http://konachan.zju.link/piss.php?%@",param];
+        return result;
+    } forKey:@"PissBooru"];
+    
+    [siteMethodMap setObject:(NSDictionary *)^(NSMutableData * data){
+        NSError * jsonError;
+        NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"%@",str);
+        NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[str dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&jsonError];
+        NSMutableArray * tmpArray = (NSMutableArray *)dict;
+        for(int i=0;i<[tmpArray count];i++){
+            [tmpArray[i] setValue:@"400" forKey:@"actual_preview_height"];
+            [tmpArray[i] setValue:@"400" forKey:@"actual_preview_width"];
+            tmpArray[i][@"preview_url" ] = [tmpArray[i][@"preview_url"] stringByReplacingOccurrencesOfString:@"http:" withString:@""];
+            tmpArray[i][@"file_url"] = [tmpArray[i][@"file_url"] stringByReplacingOccurrencesOfString:@"http:" withString:@""];
+            
+            if([[AppDelegate getImageLevel]isEqualToString:@"Low"]){
+                //acc
+            }else{
+                tmpArray[i][@"preview_url"] = tmpArray[i][@"file_url"];
+            }
+            //            tmpArray[i][@"actual_preview_height"] = @"400";
+            //            tmpArray[i][@"actual_preview_width"] = @"400";
+            //            tmpArray[i][@"file_url"] = [NSString stringWithFormat:@"//konachan.zju.link/behoimi_image.php?url=%@",tmpArray[i][@"file_url"]];
+            [tmpArray setValue:[NSNumber numberWithInteger:0] forKey:@"file_size"];
+        }
+        return dict;
+    } forKey:@"PissBooru"];
+
 }
 
 @end

@@ -9,24 +9,39 @@ PODS:
   - BGWaterFlowView (0.0.4):
     - BGUIFoundationKit (~> 0.0.2)
     - SDWebImage (~> 3.7.3)
-  - HUPhotoBrowser (1.1.4)
+  - HUPhotoBrowser (1.3.1):
+    - SVProgressHUD
   - MBProgressHUD (1.0.0)
+  - MJRefresh (3.1.15.3)
+  - ReactiveCocoa (2.3.1):
+    - ReactiveCocoa/UI (= 2.3.1)
+  - ReactiveCocoa/Core (2.3.1):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.3.1)
+  - ReactiveCocoa/UI (2.3.1):
+    - ReactiveCocoa/Core
   - SDWebImage (3.7.6):
     - SDWebImage/Core (= 3.7.6)
   - SDWebImage/Core (3.7.6)
+  - SVProgressHUD (2.1.2)
 
 DEPENDENCIES:
   - BGWaterFlowView
-  - HUPhotoBrowser (~> 1.1.3)
+  - HUPhotoBrowser
   - MBProgressHUD
+  - MJRefresh
+  - ReactiveCocoa (= 2.3.1)
 
 SPEC CHECKSUMS:
   BGUIFoundationKit: 9a9fc186b416ef965dd41e6dc638f701127d349c
   BGWaterFlowView: 77e6ff8277936ffd783c951b39b5b15587e30a07
-  HUPhotoBrowser: ce71c76b622a959ff225b673315614ab6c582cf1
+  HUPhotoBrowser: 136b1830da6e3231c823f83e1ce8b2288add312a
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
+  ReactiveCocoa: 3fe9b233ca6db810e86681b5749488564c1179a1
   SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
 
-PODFILE CHECKSUM: bd2b3286dd0f9c46429264ca29e887e5ea5efc16
+PODFILE CHECKSUM: ae6047987ddac6b65967a99d4ef47903ed4f9aad
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.4.0

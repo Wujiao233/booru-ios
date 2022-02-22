@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '4D4FAA42FB605D90ADA38B1393550B0B'
-               BlueprintName = 'HUPhotoBrowser'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libHUPhotoBrowser.a'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F61EABE2A50F74AE114AA3F4367121A8"
+               BlueprintName = "HUPhotoBrowser"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "libHUPhotoBrowser.a">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "HistoryViewController.h"
 
+#import "DownloadManagerViewController.h"
+
 static NSString * tags;
 static NSString * site;
 static NSString * imageLevel;
@@ -16,6 +18,9 @@ static NSString * limit;
 
 static NSString * ratting;
 static NSString * censore;
+static NSInteger heightLimit;
+static NSInteger widthLimit;
+static NSString * sizeType;
 
 static NSInteger lineNumber;
 
@@ -37,6 +42,10 @@ static NSInteger lineNumber;
     
 }
 
++(DownloadManagerViewModel *)getDownloadVM{
+    return [DownloadManagerViewController getDownloadManager];
+}
+
 +(NSString *)getSite{
     return site;
 }
@@ -45,7 +54,14 @@ static NSInteger lineNumber;
 }
 
 +(NSString *)getTags{
-    return [NSString stringWithFormat:@"%@ %@ %@",tags,ratting,censore];
+    NSString * sizeStr = @"";
+    if(heightLimit != 0){
+        sizeStr = [NSString stringWithFormat:@"%@ height:>=%ld",sizeStr,heightLimit];
+    }
+    if(widthLimit != 0){
+        sizeStr = [NSString stringWithFormat:@"%@ width:>=%ld",sizeStr,widthLimit];
+    }
+    return [NSString stringWithFormat:@"%@ %@ %@ %@",tags,ratting,censore,sizeStr];
 }
 +(NSString *)getOriTags{
     return tags;
@@ -94,6 +110,31 @@ static NSInteger lineNumber;
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
++(NSString *)getSizeType{
+    return sizeType;
+}
++(void)setSizeType:(NSString *)str{
+    sizeType = str;
+    [[NSUserDefaults standardUserDefaults]setObject:sizeType forKey:@"sizeType"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
++(NSInteger)getHeightLimit{
+    return heightLimit;
+}
++(void)setHeightLimit:(NSInteger)i{
+    heightLimit = i;
+    [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithInteger:heightLimit] forKey:@"heightLimit"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
++(NSInteger)getWidthLimit{
+    return widthLimit;
+}
++(void)setWidthLimit:(NSInteger)i{
+    widthLimit = i;
+    [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithInteger:widthLimit] forKey:@"widthLimit"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -126,6 +167,14 @@ static NSInteger lineNumber;
         [[NSUserDefaults standardUserDefaults]synchronize];
     }
     
+    sizeType = [[NSUserDefaults standardUserDefaults]stringForKey:@"sizeType"];
+    if(!sizeType){
+        sizeType = @"All";
+        [[NSUserDefaults standardUserDefaults]setObject:sizeType forKey:@"sizeType"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    sizeType = @"All";
+    
     censore = [[NSUserDefaults standardUserDefaults]stringForKey:@"censore"];
     if(!censore){
         censore = @"";
@@ -137,6 +186,20 @@ static NSInteger lineNumber;
     if(!history){
         history = [NSArray new];
         [[NSUserDefaults standardUserDefaults]setObject:history forKey:@"History"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    
+    heightLimit = [[[NSUserDefaults standardUserDefaults]valueForKey:@"heightLimit"] integerValue];
+    if(!heightLimit){
+        heightLimit = 0;
+        [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithInteger:heightLimit] forKey:@"heightLimit"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    
+    widthLimit = [[[NSUserDefaults standardUserDefaults]valueForKey:@"widthLimit"] integerValue];
+    if(!widthLimit){
+        widthLimit = 0;
+        [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithInteger:widthLimit] forKey:@"widthLimit"];
         [[NSUserDefaults standardUserDefaults]synchronize];
     }
     

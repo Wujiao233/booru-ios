@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '8D84ECD20F96F8489EB171361C1B6D9D'
-               BlueprintName = 'BGWaterFlowView'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libBGWaterFlowView.a'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8D84ECD20F96F8489EB171361C1B6D9D"
+               BlueprintName = "BGWaterFlowView"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "libBGWaterFlowView.a">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

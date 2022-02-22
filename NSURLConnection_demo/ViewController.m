@@ -13,6 +13,8 @@
 #import "BooruNetwork.h"
 #import "MBProgressHUD.h"
 #import "SettingViewController.h"
+#import "DownloadManagerViewModel.h"
+//#import "DownloadManagerViewController.m"
 
 @interface ViewController ()<UISearchResultsUpdating,UISearchBarDelegate,UITabBarControllerDelegate>{
     NSMutableData* __data;
@@ -79,7 +81,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initTableViewWithDict:) name:@"searchResult" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSearchResultFinished:) name:@"tagsSearch" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSearchBarKeyWord:) name:@"changeTags" object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doAddDownload:) name:@"addToDownload" object:nil];
+    //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(changeFrames:)
 //                                                 name:UIDeviceOrientationDidChangeNotification
 //                                               object:nil];
@@ -91,6 +94,7 @@
     [self.titleTwoLabel setFrame:CGRectMake(40, [UIScreen mainScreen].bounds.size.height / 2 - 30, [UIScreen mainScreen].bounds.size.width - 80, 44)];
     [self.searchAll_Btn setFrame:CGRectMake(120, [UIScreen mainScreen].bounds.size.height / 2 + 20, [UIScreen mainScreen].bounds.size.width - 240, 24)];
     self.titleLabel.text = [AppDelegate getSite];
+//    [DownloadManagerViewController getDownloadManager];
     
 }
 
@@ -99,35 +103,73 @@
     [self changeFrames:nil];
 }
 
+-(BOOL)shouldAutorotate{
+    return NO;
+}
+
 -(void)changeFrames:(NSNotification *)notification{
-    if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait
-        || [[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
-        NSLog(@"portrait");
-        [self.searchBarView setFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,44)];
-        [self.searchController.searchBar removeFromSuperview ];
-        self.searchController.searchBar.frame=CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,44);
-        [self.searchBarView addSubview:self.searchController.searchBar];
-        //        self.frame=CGRectMake(0, 0, height, width);
-        [AppDelegate setLineNumber:4];
+    NSString *device = [[UIDevice currentDevice].model substringToIndex:4];
+    if ([device isEqualToString:@"iPho"]){
+        if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait
+            || [[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
+            NSLog(@"portrait");
+            [self.searchBarView setFrame:CGRectMake(0,88,[UIScreen mainScreen].bounds.size.width,44)];
+            [self.searchController.searchBar removeFromSuperview ];
+            self.searchController.searchBar.frame=CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,44);
+            [self.searchBarView addSubview:self.searchController.searchBar];
+            //        self.frame=CGRectMake(0, 0, height, width);
+            [AppDelegate setLineNumber:2];
+        }
+        else
+        {
+            NSLog(@"landscape");
+            [self.searchBarView setFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,44)];
+            [self.searchController.searchBar removeFromSuperview ];
+            self.searchController.searchBar.frame=CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,44);
+            [self.searchBarView addSubview:self.searchController.searchBar];
+            //        self.frame=CGRectMake(0, 0, width, height);
+            [AppDelegate setLineNumber:4];
+        }
+        NSLog(@"view is %@",self);
+        NSLog(@"%f,%f",[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height);
+    }else{
+        if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait
+            || [[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
+            NSLog(@"portrait");
+            [self.searchBarView setFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,44)];
+            [self.searchController.searchBar removeFromSuperview ];
+            self.searchController.searchBar.frame=CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,44);
+            [self.searchBarView addSubview:self.searchController.searchBar];
+            //        self.frame=CGRectMake(0, 0, height, width);
+            [AppDelegate setLineNumber:4];
+        }
+        else
+        {
+            NSLog(@"landscape");
+            [self.searchBarView setFrame:CGRectMake(0,88,[UIScreen mainScreen].bounds.size.width,44)];
+            [self.searchController.searchBar removeFromSuperview ];
+            self.searchController.searchBar.frame=CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,44);
+            [self.searchBarView addSubview:self.searchController.searchBar];
+            //        self.frame=CGRectMake(0, 0, width, height);
+            [AppDelegate setLineNumber:6];
+        }
+        NSLog(@"view is %@",self);
+        NSLog(@"%f,%f",[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height);
     }
-    else
-    {
-        NSLog(@"landscape");
-        [self.searchBarView setFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,44)];
-        [self.searchController.searchBar removeFromSuperview ];
-        self.searchController.searchBar.frame=CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,44);
-        [self.searchBarView addSubview:self.searchController.searchBar];
-//        self.frame=CGRectMake(0, 0, width, height);
-        [AppDelegate setLineNumber:6];
-    }
-    NSLog(@"view is %@",self);
-    NSLog(@"%f,%f",[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height);
+    
 }
 
 
 - (IBAction)TestBtn_Click:(UIButton *)sender {
     WaterFlowViewController * con = [WaterFlowViewController new];
     [self.navigationController pushViewController:con animated:YES];
+}
+
+-(void)doAddDownload:(NSNotification *)obj{
+    NSString *url = obj.userInfo[@"url"];
+    NSNumber *size = obj.userInfo[@"size"];
+    [[AppDelegate getDownloadVM] download:url withSize:size];
+    
 }
 -(void)changeSearchBarKeyWord:(NSNotification *)obj{
     NSString * str = (NSString *)obj.userInfo;
@@ -204,23 +246,24 @@
 
 - (void)updateSearchResultFinished:(NSNotification *)obj{
     NSMutableArray * dict = (NSMutableArray *)obj.userInfo;
-    UINavigationController *navController = (UINavigationController *)self.searchController.searchResultsController;
-    SearchResultTableViewController * resultVC = (SearchResultTableViewController *)navController.topViewController;
-    if(resultVC.resultsArray == nil){
-        resultVC.resultsArray = [NSMutableArray new];
-    }else{
-        [resultVC.resultsArray removeAllObjects];
-    }
-    NSLog(@"%@",dict);
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        UINavigationController *navController = (UINavigationController *)self.searchController.searchResultsController;
+        SearchResultTableViewController * resultVC = (SearchResultTableViewController *)navController.topViewController;
+        if(resultVC.resultsArray == nil){
+            resultVC.resultsArray = [NSMutableArray new];
+        }else{
+            [resultVC.resultsArray removeAllObjects];
+        }
+        NSLog(@"%@",dict);
 
-    for(int i=0;i<dict.count;i++){
-        NSString * str =[NSString stringWithFormat:@"%@ -> %@",dict[i][@"tag"],dict[i][@"inch"]];
-        [resultVC.resultsArray addObject:str];
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [resultVC.tableView reloadData];
-    });
-
+        for(int i=0;i<dict.count;i++){
+            NSString * str =[NSString stringWithFormat:@"%@ -> %@",dict[i][@"tag"],dict[i][@"inch"]];
+            [resultVC.resultsArray addObject:str];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [resultVC.tableView reloadData];
+        });
+    }];
     
 }
 

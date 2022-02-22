@@ -44,13 +44,43 @@
     }
     // 添加的操作
     if (editingStyle == UITableViewCellEditingStyleInsert) {
-        NSString * keyword = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-        NSPredicate *predicate1 = [NSPredicate predicateWithFormat:@"SELF == %@", keyword];
-        NSArray *results1 = [self.selfTags filteredArrayUsingPredicate:predicate1];
-        if(results1.count <= 0){
-            [self.selfTags  addObject:keyword];
-            NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:self.selfTags.count-1 inSection:0 ]];
-            [tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:(UITableViewRowAnimationRight)];
+        if(indexPath.section == 1){
+            NSLog(@"手动添加");
+            //添加的操作
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入Tag" preferredStyle:UIAlertControllerStyleAlert];
+            //增加确定按钮；
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //获取第1个输入框；
+                UITextField *userNameTextField = alertController.textFields.firstObject;
+                NSLog(@"Tag = %@",userNameTextField.text);
+                NSString * keyword = userNameTextField.text;
+                NSPredicate *predicate1 = [NSPredicate predicateWithFormat:@"SELF == %@", keyword];
+                NSArray *results1 = [self.selfTags filteredArrayUsingPredicate:predicate1];
+                if(results1.count <= 0){
+                    [self.selfTags  addObject:keyword];
+                    NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:self.selfTags.count-1 inSection:0 ]];
+                    [tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:(UITableViewRowAnimationRight)];
+                }
+            }]];
+            
+            //增加取消按钮；
+            [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+            
+            //定义第一个输入框；
+            [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.placeholder = @"Tag";
+            }];
+            
+            [self presentViewController:alertController animated:true completion:nil];
+        }else{
+            NSString * keyword = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+            NSPredicate *predicate1 = [NSPredicate predicateWithFormat:@"SELF == %@", keyword];
+            NSArray *results1 = [self.selfTags filteredArrayUsingPredicate:predicate1];
+            if(results1.count <= 0){
+                [self.selfTags  addObject:keyword];
+                NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:self.selfTags.count-1 inSection:0 ]];
+                [tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:(UITableViewRowAnimationRight)];
+            }
         }
     }
     
@@ -58,9 +88,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(indexPath.section == 0){
-            }else{
-        
+//    if(indexPath.section == 0){
+//            }else{
+//
+//    }
+    if(indexPath.section == 2){
+        NSLog(@"手动添加");
+        //添加的操作
     }
     NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:0];
     [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
@@ -99,6 +133,7 @@
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.section == 0) return UITableViewCellEditingStyleDelete;
+    if(indexPath.section == 2) return UITableViewCellEditingStyleInsert;
     return UITableViewCellEditingStyleInsert;
 }
 
@@ -107,10 +142,11 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 0)return self.selfTags.count;
-    return self.targetTags.count;
+    else if(section == 2) return self.targetTags.count;
+    return 1;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -126,8 +162,11 @@
         case 0:
             cell.textLabel.text = self.selfTags[row];
             break;
-        case 1:
+        case 2:
             cell.textLabel.text = self.targetTags[row];
+            break;
+        case 1:
+            cell.textLabel.text = @"手动输入";
             break;
         default:
             break;
@@ -139,9 +178,10 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if(section == 0){
         return @"当前Tags";
-    }else{
-        return @"本图Tags";
+    }else if(section == 1){
+        return @"手动添加";
     }
+    return @"本图Tags";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

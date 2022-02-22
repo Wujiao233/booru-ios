@@ -16,6 +16,7 @@
 }
 @property (weak, nonatomic) IBOutlet UINavigationBar *_selfNavigationBar;
 @property (weak, nonatomic) IBOutlet UINavigationItem *_selfNavigationItem;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 
 @end
@@ -53,11 +54,11 @@
 }
 
 -(void)drawTableView{
-    UITableView *tview = [[UITableView alloc] initWithFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height - 64) style:UITableViewStylePlain];
-    [tview setDelegate:self];
-    [tview setDataSource:self];
-    [self.view addSubview:tview];
-    _selfTable = tview;
+//    UITableView *tview = [[UITableView alloc] initWithFrame:CGRectMake(0,64,[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height - 64) style:UITableViewStylePlain];
+    [self.tableView setDelegate:self];
+    [self.tableView setDataSource:self];
+//    [self.view addSubview:tview];
+    _selfTable = self.tableView;
     // tview.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,  24)];
 }
 
