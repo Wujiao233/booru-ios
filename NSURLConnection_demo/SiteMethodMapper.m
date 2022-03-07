@@ -82,15 +82,18 @@ static SiteMethodMapper * siteMethodMapper;
         NSMutableArray * resArray = [NSMutableArray new];
         for(int i=0;i<[array count];i++){
             GDataXMLElement * ele = [array objectAtIndex:i];
+//            NSLog(@"Count : %@",[ele attributes]);
             NSMutableDictionary * tmpDict = [NSMutableDictionary new];
-            [tmpDict setValue:[[ele attributeForName:@"tags"]stringValue] forKey:@"tags"];
-            [tmpDict setValue:[[ele attributeForName:@"preview_height"]stringValue] forKey:@"actual_preview_height"];
-            [tmpDict setValue:[[ele attributeForName:@"preview_width"]stringValue] forKey:@"actual_preview_width"];
-            [tmpDict setValue:[[ele attributeForName:@"file_url"]stringValue] forKey:@"file_url"];
+           
+            
+            [tmpDict setValue:[[[ele elementsForName:@"tags"] objectAtIndex:0] stringValue] forKey:@"tags"];
+            [tmpDict setValue:[[[ele elementsForName:@"preview_height"] objectAtIndex:0] stringValue] forKey:@"actual_preview_height"];
+            [tmpDict setValue:[[[ele elementsForName:@"preview_width"] objectAtIndex:0] stringValue] forKey:@"actual_preview_width"];
+            [tmpDict setValue:[[[ele elementsForName:@"file_url"] objectAtIndex:0] stringValue] forKey:@"file_url"];
             if([[AppDelegate getImageLevel]isEqualToString:@"Low"]){
-                [tmpDict setValue:[[ele attributeForName:@"preview_url"]stringValue] forKey:@"preview_url"];
+                [tmpDict setValue:[[[ele elementsForName:@"preview_url"] objectAtIndex:0] stringValue] forKey:@"preview_url"];
             }else{
-                [tmpDict setValue:[[ele attributeForName:@"sample_url"]stringValue] forKey:@"preview_url"];
+                [tmpDict setValue:[[[ele elementsForName:@"sample_url"] objectAtIndex:0] stringValue]forKey:@"preview_url"];
             }
             [tmpDict setValue:[NSNumber numberWithInteger:0] forKey:@"file_size"];
             [resArray addObject:tmpDict];
