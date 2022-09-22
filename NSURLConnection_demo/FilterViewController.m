@@ -99,7 +99,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setTitle:@"Filter"];
-    ratingArray = [[NSMutableArray alloc]initWithObjects:@"1",@"0",@"0",@"0", nil];
+    ratingArray = [[NSMutableArray alloc]initWithObjects:@"1",@"0",@"0",@"0",@"0", nil];
     centArray = [[NSMutableArray alloc]initWithObjects:@"1",@"0",@"0", nil];
     sizeArray =[[NSMutableArray alloc]initWithObjects:@"1",@"0",@"0", nil];
 //    keyword = [[AppDelegate getTags] lowercaseString];
@@ -143,7 +143,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 1)return 3;
-    if(section == 0)return 4;
+    if(section == 0)return 5;
     if(section == 2)return 2;
     return 3;
 }
@@ -158,10 +158,12 @@
     }
     if([keyword_ratting isEqualToString:@"rating:safe"]){
         ratingArray[1] = @"1";
-    }else if([keyword_ratting isEqualToString:@"rating:questionable"]){
+    }else if([keyword_ratting isEqualToString:@"rating:sensitive"]){
         ratingArray[2] = @"1";
-    }else if([keyword_ratting isEqualToString:@"rating:explicit"]){
+    }else if([keyword_ratting isEqualToString:@"rating:questionable"]){
         ratingArray[3] = @"1";
+    }else if([keyword_ratting isEqualToString:@"rating:explicit"]){
+        ratingArray[4] = @"1";
     }else{
         ratingArray[0] = @"1";
     }
@@ -206,8 +208,9 @@
             case 0:
                 if(row == 0)cell.textLabel.text =  @"All";
                 if(row == 1)cell.textLabel.text =  @"rating:safe";
-                if(row == 2)cell.textLabel.text =  @"rating:questionable";
-                if(row == 3)cell.textLabel.text =  @"rating:explicit";
+                if(row == 2)cell.textLabel.text =  @"rating:sensitive";
+                if(row == 3)cell.textLabel.text =  @"rating:questionable";
+                if(row == 4)cell.textLabel.text =  @"rating:explicit";
                 if([ratingArray[row] isEqualToString:@"1"]){
                     cell.accessoryType = UITableViewCellAccessoryCheckmark;
                 }

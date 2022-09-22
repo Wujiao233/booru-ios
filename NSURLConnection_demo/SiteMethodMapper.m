@@ -49,6 +49,7 @@ static SiteMethodMapper * siteMethodMapper;
 
 -(void)addSiteMap{
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+        tags = [tags stringByReplacingOccurrencesOfString:@"rating:sensitive" withString:@"rating:questionable"];
         NSString * param = [NSString stringWithFormat:@"tags=%@&page=%d&limit=%d",tags,page,limit];
         NSString * result = [NSString stringWithFormat:@"http://konachan.com/post.json?%@",param];
         return result;
@@ -62,6 +63,7 @@ static SiteMethodMapper * siteMethodMapper;
     
     // https://gelbooru.com/index.php?page=dapi&s=post&q=index&tags=loli&pid=1&limit=50
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+        tags = [tags stringByReplacingOccurrencesOfString:@"rating:safe" withString:@"rating:general"];
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
         tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
@@ -102,6 +104,7 @@ static SiteMethodMapper * siteMethodMapper;
     } forKey:@"Gelbooru"];
     
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+        tags = [tags stringByReplacingOccurrencesOfString:@"rating:sensitive" withString:@"rating:questionable"];
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
         tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
@@ -123,6 +126,7 @@ static SiteMethodMapper * siteMethodMapper;
     } forKey:@"Yande"];
     
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+        tags = [tags stringByReplacingOccurrencesOfString:@"rating:sensitive" withString:@"rating:questionable"];
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
         tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
@@ -150,6 +154,7 @@ static SiteMethodMapper * siteMethodMapper;
     } forKey:@"Danbooru"];
     
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+        tags = [tags stringByReplacingOccurrencesOfString:@"rating:sensitive" withString:@"rating:questionable"];
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [[[tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"+"] stringByReplacingOccurrencesOfString:@"%20" withString:@"+"] stringByReplacingOccurrencesOfString:@"++" withString:@"+"];
         NSArray * tmpArray = [tags componentsSeparatedByString:@"+"];
@@ -187,6 +192,7 @@ static SiteMethodMapper * siteMethodMapper;
     } forKey:@"3DBooru"];
     
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+        tags = [tags stringByReplacingOccurrencesOfString:@"rating:sensitive" withString:@"rating:questionable"];
         NSString * param = [NSString stringWithFormat:@"tags=%@&page=%d&limit=%d",tags,page,limit];
         NSString * result = [NSString stringWithFormat:@"https://lolibooru.moe/post/index.json?%@",param];
         return result;
@@ -205,6 +211,7 @@ static SiteMethodMapper * siteMethodMapper;
     } forKey:@"LoliBooru"];
     
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+        tags = [tags stringByReplacingOccurrencesOfString:@"rating:sensitive" withString:@"rating:questionable"];
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
         tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
@@ -239,6 +246,7 @@ static SiteMethodMapper * siteMethodMapper;
     } forKey:@"XBooru"];
     
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+        tags = [tags stringByReplacingOccurrencesOfString:@"rating:sensitive" withString:@"rating:questionable"];
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
         tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
@@ -306,6 +314,7 @@ static SiteMethodMapper * siteMethodMapper;
 //    } forKey:@"PornographyWithStandards"];
     
     [siteUrlMap setObject:(NSString *)^(NSString * tags,int page,int limit){
+        tags = [tags stringByReplacingOccurrencesOfString:@"rating:sensitive" withString:@"rating:questionable"];
         tags = [tags stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         tags = [tags stringByReplacingOccurrencesOfString:@"%2520" withString:@"%20"];
         tags = [tags stringByReplacingOccurrencesOfString:@"%253E" withString:@"%3E"];
