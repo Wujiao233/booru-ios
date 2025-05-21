@@ -1,5 +1,5 @@
 
-platform :ios ,'11.0'
+platform :ios ,'13.0'
 project “NSURLConnection_demo.xcodeproj”
 target "NSURLConnection_demo" do
 pod 'MBProgressHUD'

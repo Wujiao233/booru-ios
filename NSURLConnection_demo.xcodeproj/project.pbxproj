@@ -73,7 +73,6 @@
 		A830F1AC1F21F7D2001DBACA /* HSSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSSessionModel.m; sourceTree = "<group>"; };
 		A830F1AE1F21F7D2001DBACA /* NSString+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hash.h"; sourceTree = "<group>"; };
 		A830F1AF1F21F7D2001DBACA /* NSString+Hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hash.m"; sourceTree = "<group>"; };
-		A861F5E21E6A847D004F2788 /* NSURLConnection_demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = NSURLConnection_demo.app; path = "/Users/wujiao/Documents/XCodeProject/booru-ios/build/Debug-iphoneos/NSURLConnection_demo.app"; sourceTree = "<absolute>"; };
 		A861F5E61E6A847D004F2788 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A861F5E81E6A847D004F2788 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A861F5E91E6A847D004F2788 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -83,10 +82,8 @@
 		A861F5F11E6A847D004F2788 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A861F5F41E6A847D004F2788 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A861F5F61E6A847D004F2788 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A861F5FB1E6A847D004F2788 /* NSURLConnection_demoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = NSURLConnection_demoTests.xctest; path = "/Users/wujiao/Documents/XCodeProject/booru-ios/build/Release-iphoneos/NSURLConnection_demoTests.xctest"; sourceTree = "<absolute>"; };
 		A861F5FF1E6A847D004F2788 /* NSURLConnection_demoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSURLConnection_demoTests.m; sourceTree = "<group>"; };
 		A861F6011E6A847D004F2788 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A861F6061E6A847D004F2788 /* NSURLConnection_demoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = NSURLConnection_demoUITests.xctest; path = "/Users/wujiao/Documents/XCodeProject/booru-ios/build/Release-iphoneos/NSURLConnection_demoUITests.xctest"; sourceTree = "<absolute>"; };
 		A861F60A1E6A847D004F2788 /* NSURLConnection_demoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSURLConnection_demoUITests.m; sourceTree = "<group>"; };
 		A861F60C1E6A847D004F2788 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A861F6261E6AB85C004F2788 /* TableFootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableFootViewController.h; sourceTree = "<group>"; };
@@ -129,6 +126,9 @@
 		A8F0EC851F21E62800E89C0E /* DownloadManagerViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadManagerViewModel.h; sourceTree = "<group>"; };
 		A8F0EC861F21E62800E89C0E /* DownloadManagerViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadManagerViewModel.m; sourceTree = "<group>"; };
 		A8F0EC881F21E8D600E89C0E /* ReactiveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactiveView.h; sourceTree = "<group>"; };
+		A8F536572DDCEBBE007D5A8C /* NSURLConnection_demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NSURLConnection_demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8F536582DDCEBBE007D5A8C /* NSURLConnection_demoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NSURLConnection_demoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8F536592DDCEBBE007D5A8C /* NSURLConnection_demoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NSURLConnection_demoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B809D3EC87BDC86C0C7FABC1 /* libPods-NSURLConnection_demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NSURLConnection_demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -197,6 +197,9 @@
 				A861F6091E6A847D004F2788 /* NSURLConnection_demoUITests */,
 				7679E277B13A453AF55815B4 /* Pods */,
 				BDEFBBF3B2CE9F6F4B1959C0 /* Frameworks */,
+				A8F536572DDCEBBE007D5A8C /* NSURLConnection_demo.app */,
+				A8F536582DDCEBBE007D5A8C /* NSURLConnection_demoTests.xctest */,
+				A8F536592DDCEBBE007D5A8C /* NSURLConnection_demoUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -347,7 +350,7 @@
 			);
 			name = NSURLConnection_demo;
 			productName = NSURLConnection_demo;
-			productReference = A861F5E21E6A847D004F2788 /* NSURLConnection_demo.app */;
+			productReference = A8F536572DDCEBBE007D5A8C /* NSURLConnection_demo.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A861F5FA1E6A847D004F2788 /* NSURLConnection_demoTests */ = {
@@ -365,7 +368,7 @@
 			);
 			name = NSURLConnection_demoTests;
 			productName = NSURLConnection_demoTests;
-			productReference = A861F5FB1E6A847D004F2788 /* NSURLConnection_demoTests.xctest */;
+			productReference = A8F536582DDCEBBE007D5A8C /* NSURLConnection_demoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		A861F6051E6A847D004F2788 /* NSURLConnection_demoUITests */ = {
@@ -383,7 +386,7 @@
 			);
 			name = NSURLConnection_demoUITests;
 			productName = NSURLConnection_demoUITests;
-			productReference = A861F6061E6A847D004F2788 /* NSURLConnection_demoUITests.xctest */;
+			productReference = A8F536592DDCEBBE007D5A8C /* NSURLConnection_demoUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -709,7 +712,8 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = NSURLConnection_demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -756,7 +760,8 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = NSURLConnection_demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",

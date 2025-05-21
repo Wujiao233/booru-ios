@@ -32,8 +32,8 @@
             timestampString = "545573632.4555219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "277"
-            endingLineNumber = "277"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
             landmarkName = "-pullUpWithRefreshWaterFlowView:"
             landmarkType = "7">
          </BreakpointContent>
@@ -66,10 +66,10 @@
             timestampString = "545573632.456398"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "259"
-            endingLineNumber = "259"
-            landmarkName = "WaterFlowViewController"
-            landmarkType = "3">
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "-waterFlowView:didSelectItemAtIndexPath:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -83,8 +83,8 @@
             timestampString = "545573632.456473"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
             landmarkName = "-barRightButton_Click"
             landmarkType = "7">
          </BreakpointContent>
@@ -185,8 +185,8 @@
             timestampString = "545573632.464113"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
             landmarkName = "-showTagsInfo"
             landmarkType = "7">
          </BreakpointContent>
@@ -559,8 +559,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "507"
             endingLineNumber = "507"
-            landmarkName = "HUPhotoBrowser"
-            landmarkType = "3">
+            landmarkName = "-imageSavedToPhotosAlbum:didFinishSavingWithError:contextInfo:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -795,8 +795,8 @@
             timestampString = "544945632.50919"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
             landmarkName = "-doAddDownload:"
             landmarkType = "7">
          </BreakpointContent>
@@ -846,8 +846,8 @@
             timestampString = "545573632.46925"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "342"
-            endingLineNumber = "342"
+            startingLineNumber = "352"
+            endingLineNumber = "352"
             landmarkName = "-loadMoreRefreshDataFinished:"
             landmarkType = "7">
          </BreakpointContent>
@@ -898,38 +898,6 @@
             endingLineNumber = "117"
             landmarkName = "-addSiteMap"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "A2DC0AAD-9C9F-4308-B173-FCB70D98E0FB - 2fd5b8821a97b3c3"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[SiteMethodMapper addSiteMap]"
-                  moduleName = "NSURLConnection_demo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/wujiao/Documents/XCodeProject/booru-ios/NSURLConnection_demo/SiteMethodMapper.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "109"
-                  endingLineNumber = "109"
-                  offsetFromSymbolStart = "296">
-               </Location>
-               <Location
-                  uuid = "A2DC0AAD-9C9F-4308-B173-FCB70D98E0FB - 9df0609270f27fa3"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__30-[SiteMethodMapper addSiteMap]_block_invoke_6"
-                  moduleName = "NSURLConnection_demo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/wujiao/Documents/XCodeProject/booru-ios/NSURLConnection_demo/SiteMethodMapper.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "111"
-                  endingLineNumber = "111"
-                  offsetFromSymbolStart = "36">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -942,8 +910,8 @@
             filePath = "NSURLConnection_demo/WaterFlowViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
             landmarkName = "-initWithDict:"
             landmarkType = "7">
          </BreakpointContent>
@@ -974,8 +942,8 @@
             filePath = "NSURLConnection_demo/WaterFlowViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "343"
-            endingLineNumber = "343"
+            startingLineNumber = "353"
+            endingLineNumber = "353"
             landmarkName = "-loadMoreRefreshDataFinished:"
             landmarkType = "7">
          </BreakpointContent>
@@ -990,8 +958,8 @@
             filePath = "NSURLConnection_demo/WaterFlowViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "294"
-            endingLineNumber = "294"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
             landmarkName = "-loadNewRefreshDataFinished:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1006,8 +974,8 @@
             filePath = "NSURLConnection_demo/ViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
             landmarkName = "-initTableViewWithDict:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1073,6 +1041,22 @@
             startingLineNumber = "79"
             endingLineNumber = "79"
             landmarkName = "-addSiteMap"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3C4EF1FF-8BA0-49F9-8F32-C52C665AA7FF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NSURLConnection_demo/TagsEditViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "-refreshData"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

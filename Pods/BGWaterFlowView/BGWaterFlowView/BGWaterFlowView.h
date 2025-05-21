@@ -38,6 +38,7 @@
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 - (void)registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath;
+- (__kindof UICollectionViewCell *)cellForItemAtIndexPath:(nonnull NSIndexPath *) indexPath;
 
 /**
  *  刷新数据

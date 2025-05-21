@@ -78,6 +78,10 @@ static NSString * const BGCollectionRefreshFooterView = @"BGCollectionRefreshFoo
     return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 }
 
+- (__kindof UICollectionViewCell *)cellForItemAtIndexPath:(nonnull NSIndexPath *) indexPath{
+    return [self.collectionView cellForItemAtIndexPath:indexPath];
+}
+
 - (void)reloadData{
     [self.collectionView reloadData];
 }

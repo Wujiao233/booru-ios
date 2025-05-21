@@ -46,14 +46,15 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.tabBarController setTabBarHidden:NO animated:YES];
     self.titleLabel.text = [AppDelegate getSite];
 //    self.tabBarController.tabBar.hidden = NO;
 //    self.hidesBottomBarWhenPushed=NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+    
     [super viewDidAppear:animated];
-    self.hidesBottomBarWhenPushed=YES;
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
@@ -81,7 +82,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initTableViewWithDict:) name:@"searchResult" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSearchResultFinished:) name:@"tagsSearch" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSearchBarKeyWord:) name:@"changeTags" object:nil];
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doAddDownload:) name:@"addToDownload" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doAddDownload:) name:@"addToDownload" object:nil];
     //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(changeFrames:)
 //                                                 name:UIDeviceOrientationDidChangeNotification
@@ -162,6 +163,7 @@
 
 - (IBAction)TestBtn_Click:(UIButton *)sender {
     WaterFlowViewController * con = [WaterFlowViewController new];
+    con.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:con animated:YES];
 }
 
@@ -224,6 +226,7 @@
     NSMutableArray * dict = (NSMutableArray *)obj.userInfo;
     dispatch_async(dispatch_get_main_queue(), ^{
         WaterFlowViewController * con = [[WaterFlowViewController alloc]initWithDict:dict];
+        con.hidesBottomBarWhenPushed =  YES;
         con.isFromFilter = NO;
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [MBProgressHUD hideHUDForView:self.searchController.view animated:YES];

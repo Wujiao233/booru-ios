@@ -63,7 +63,7 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+    self.tabBarController.tabBar.hidden = YES;
     if(self.isFromFilter == YES){
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [self loadNewRefreshData:waterFlowViewLocal];
@@ -96,6 +96,7 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
         self.cellHeightDic = [NSMutableDictionary new];
         self.sourceTags = [NSMutableArray new];
         self.fileSize = [NSMutableArray new];
+        self.hidesBottomBarWhenPushed = YES;
         for(int i=0;i<dict.count;i++){
             if(![self checkSizeTypeWithWidth:[[NSString stringWithFormat:@"%@",dict[i][@"actual_preview_width"]] doubleValue] AndHeight:[[NSString stringWithFormat:@"%@",dict[i][@"actual_preview_height"]] doubleValue]]){
                 continue;
@@ -122,7 +123,15 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = [AppDelegate getOriTags];
+    [self.tabBarController setTabBarHidden:YES animated:YES];
+//    self.title = [AppDelegate getOriTags];
+    NSString *oriTags = [AppDelegate getOriTags];
+
+    if (oriTags == nil || [oriTags isEqualToString:@" "] || [oriTags isEqualToString:@""]) {
+        self.title = @"All Images";
+    } else {
+        self.title = oriTags;
+    }
     self.page = 1;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadNewRefreshDataFinished:) name:@"waterFlow" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadMoreRefreshDataFinished:) name:@"waterFlowMore" object:nil];
@@ -259,7 +268,8 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
 
 - (void)waterFlowView:(BGWaterFlowView *)waterFlowView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"%@", indexPath);
-    BGCollectionViewCell *cell = [waterFlowView dequeueReusableCellWithReuseIdentifier:BGCollectionCellIdentify forIndexPath:indexPath];
+//    BGCollectionViewCell *cell = [waterFlowView dequeueReusableCellWithReuseIdentifier:BGCollectionCellIdentify forIndexPath:indexPath];
+    BGCollectionViewCell *cell = [waterFlowView cellForItemAtIndexPath:indexPath];
     cell.urlStr = self.dataList[indexPath.row];
     [cell setNeedsLayout];
 //    NSString * url = [NSString stringWithFormat:@"http:%@",self.sourceArr[indexPath.row]];
